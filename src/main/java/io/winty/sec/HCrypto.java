@@ -1,7 +1,7 @@
 package io.winty.sec;
 
 import java.io.IOException;
-
+import java.nio.Buffer;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import javax.crypto.NoSuchPaddingException;
@@ -46,8 +46,14 @@ public class HCrypto {
     }
     
     
-    public String encrypt(String data) throws Exception {
+    private String encryptData(String data) throws Exception {
         return this.symetricService.encrypt(data, this.keyManager.getSecret());
+    }
+    
+    public String encrypt(String data) throws Exception {
+        String encryptedData = this.encryptData(data);
+        return encryptedData;
+        
     }
     
 

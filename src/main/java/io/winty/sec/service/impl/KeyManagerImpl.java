@@ -55,4 +55,5 @@ public class KeyManagerImpl implements KeyManager {
     public SecretKey getSecret() {
         return secret;
     }
+
 }
