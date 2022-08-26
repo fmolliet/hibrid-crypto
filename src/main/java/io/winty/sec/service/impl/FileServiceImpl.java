@@ -10,7 +10,6 @@ import io.winty.sec.service.FileService;
 
 public class FileServiceImpl implements FileService {
 
-    @Override
     public byte[] getFileBytes(String keyFilepath) throws IOException {
         File keyFile = new File(keyFilepath);
         String key = new String(Files.readAllBytes(keyFile.toPath()), StandardCharsets.UTF_8);
