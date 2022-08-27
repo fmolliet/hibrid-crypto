@@ -1,5 +1,6 @@
 package io.winty.sec;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -25,18 +26,28 @@ public class HCryptoTest
     HCrypto encryptInstance;
     HCrypto decryptInstance;
     
+    /**
+     * Realiza a insatancia dos modos de decrypt e encrypt
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     * @throws NoSuchPaddingException
+     * @throws IOException
+     */
     @BeforeEach
     public void init() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IOException{
         encryptInstance = new HCrypto(Cipher.ENCRYPT_MODE, "src/test/resource/key-pub.pem");
         decryptInstance = new HCrypto(Cipher.DECRYPT_MODE, "src/test/resource/key.pem");
     }
+    
     /**
-     * Rigorous Test :-)
+     * Dado que a classe HCrypto é instanciada como modo de decrypt
+     * Quando é recebido um valor para realizar encrypt
+     * Então a instancia realizará o encrypt dos valores.
+     * @throws Exception
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void testEncryptData() throws Exception
     {
-        
-        assertTrue( true );
+        assertEquals(false, encryptInstance.encrypt("test"));
     }
 }
