@@ -41,7 +41,25 @@ public class SymetricServiceImpl implements SymetricService {
         return cipher.doFinal(text);
     }
     
-    public String encrypt( String data, SecretKey secret ) throws Exception{
+    private String decrypt(byte[] text, SecretKey secret, byte[]  iv) throws Exception {
+        cipher.init(Cipher.DECRYPT_MODE, secret, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
+        byte[] plainText = cipher.doFinal(text);
+        return new String(plainText, UTF_8);
+    }
+    
+    public String decrypt(byte[] data, SecretKey secret) throws Exception {
+
+        ByteBuffer bb = ByteBuffer.wrap(data);
+        
+        byte[] iv = new byte[IV_SIZE];
+        bb.get(iv);
+        byte[] cipherText = new byte[bb.remaining()];
+        bb.get(cipherText);
+
+        return decrypt(cipherText, secret, iv);
+    }
+    
+    public byte[] encrypt( String data, SecretKey secret ) throws Exception{
         
         byte[] iv = this.getRandomNonce(IV_SIZE);
         byte[] cipherText = encrypt(data.getBytes(), secret, iv);
@@ -49,7 +67,7 @@ public class SymetricServiceImpl implements SymetricService {
                 .put(iv)
                 .put(cipherText)
                 .array();
-        return new String(cipherTextWithIv);
+        return cipherTextWithIv;
     }
     
     private byte[] getRandomNonce(int size) {
@@ -57,4 +75,5 @@ public class SymetricServiceImpl implements SymetricService {
         new SecureRandom().nextBytes(nonce);
         return nonce;
     }
+
 }
