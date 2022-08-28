@@ -8,7 +8,7 @@
   <version>1.0</version>
 
   <name>hibrid-crypto</name>
-  <url>http://fmolliet.github.io/hibrid-crypto</url>
+  <url>https://github.com/fmolliet/hibrid-crypto</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
