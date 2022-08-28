@@ -14,11 +14,6 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-
-
-
-
 /**
  * Unit test for simple App.
  */
@@ -55,6 +50,7 @@ public class HCryptoTest
     @Test
     public void testEncryptData() throws Exception
     {
+        this.init();
         assertEquals(false, encryptInstance.encrypt("test").isEmpty());
     }
     
@@ -68,6 +64,7 @@ public class HCryptoTest
     @Test
     public void testDecryptData() throws Exception
     {
+        this.init();
         String plaintext = "test";
         String encryptedData = encryptInstance.encrypt(plaintext);
         assertEquals(plaintext, decryptInstance.decrypt(encryptedData) );
