@@ -14,12 +14,8 @@ import io.winty.sec.service.AssymetricService;
 
 public class AssymetricServiceImpl implements AssymetricService {
     
-    private static final String ALGORITM = "RSA/ECB/PKCS1Padding";
+    private static final String ALGORITM = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
     
-    public static AssymetricService getInstance() throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException{
-        return new AssymetricServiceImpl();
-    }
-
     @Override
     public byte[] encrypt( byte[] data , Key publicKey) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchProviderException {
         Cipher cipher = Cipher.getInstance(ALGORITM);

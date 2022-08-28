@@ -1,16 +1,13 @@
 package io.winty.sec;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;

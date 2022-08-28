@@ -3,10 +3,14 @@ package io.winty.sec.service.impl;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
@@ -36,15 +40,14 @@ public class SymetricServiceImpl implements SymetricService {
         cipher = Cipher.getInstance(ALGORITM);
     }
     
-    private byte[] encrypt(byte[] text, SecretKey secret, byte[] iv) throws Exception {
+    private byte[] encrypt(byte[] text, SecretKey secret, byte[] iv) throws InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
         cipher.init(Cipher.ENCRYPT_MODE, secret, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
         return cipher.doFinal(text);
     }
     
-    private String decrypt(byte[] text, SecretKey secret, byte[]  iv) throws Exception {
+    private String decrypt(byte[] text, SecretKey secret, byte[]  iv) throws InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException  {
         cipher.init(Cipher.DECRYPT_MODE, secret, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
-        byte[] plainText = cipher.doFinal(text);
-        return new String(plainText, UTF_8);
+        return new String(cipher.doFinal(text), UTF_8);
     }
     
     public String decrypt(byte[] data, SecretKey secret) throws Exception {
@@ -63,11 +66,10 @@ public class SymetricServiceImpl implements SymetricService {
         
         byte[] iv = this.getRandomNonce(IV_SIZE);
         byte[] cipherText = encrypt(data.getBytes(), secret, iv);
-        byte[] cipherTextWithIv = ByteBuffer.allocate(iv.length + cipherText.length)
+        return ByteBuffer.allocate(iv.length + cipherText.length)
                 .put(iv)
                 .put(cipherText)
                 .array();
-        return cipherTextWithIv;
     }
     
     private byte[] getRandomNonce(int size) {

@@ -33,18 +33,18 @@ public class HCrypto {
     
     private static final int KEY_LEN_INFO = 4;
 
-    public HCrypto( int mode, String keyFilepath ) throws Exception {
+    public HCrypto( int mode, String keyFilepath ) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException  {
         byte[] keyBytes = fileService.getFileBytes(keyFilepath);
         this.loadServices(mode, keyBytes);
     }
     
-    public HCrypto( int mode, Key key  ) throws Exception {
+    public HCrypto( int mode, Key key  ) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException  {
         this.loadServices(mode, key.getEncoded());
     }
     
-    private void loadServices(int mode, byte[]  keyBytes) throws  Exception{
+    private void loadServices(int mode, byte[]  keyBytes) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException {
         symetricService = SymetricServiceImpl.getInstance();
-        assymetricService = AssymetricServiceImpl.getInstance();
+        assymetricService = new AssymetricServiceImpl();
         keyManager = new KeyManagerImpl(mode, keyBytes);
     }
     
@@ -52,7 +52,7 @@ public class HCrypto {
         return this.symetricService.encrypt(data, this.keyManager.getSecret());
     }
     
-    private byte[] encryptKey( ) throws Exception {
+    private byte[] encryptKey( ) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchProviderException {
         byte[] key = keyManager.getSecret().getEncoded();
         return this.assymetricService.encrypt(key, this.keyManager.getKey());
     }

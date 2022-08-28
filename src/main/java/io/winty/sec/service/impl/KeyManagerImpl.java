@@ -3,8 +3,6 @@ package io.winty.sec.service.impl;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -29,13 +27,13 @@ public class KeyManagerImpl implements KeyManager {
     public KeyManagerImpl(int mode, byte[] keyBytes ) throws InvalidKeySpecException, NoSuchAlgorithmException{
         KeyFactory keyFactory = KeyFactory.getInstance(ALGORITM);
         if ( mode == Cipher.ENCRYPT_MODE ){ 
-            this.key = (PublicKey) keyFactory.generatePublic(new X509EncodedKeySpec(keyBytes));
+            this.key = keyFactory.generatePublic(new X509EncodedKeySpec(keyBytes));
             this.generateSecretKey();
         } else if ( mode == Cipher.DECRYPT_MODE) {
-            this.key = (PrivateKey)  keyFactory.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
+            this.key =  keyFactory.generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
             
         } else {
-            throw new RuntimeException("Modo de operação inválido, por favor usar ou encrypt ou decrypt");
+            throw new SecurityException("Modo de operação inválido, por favor usar ou encrypt ou decrypt");
         }
         this.operation = mode;
     }
